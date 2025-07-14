@@ -1,0 +1,20 @@
+{
+  "name": "indexeddb-project",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build:package && npm run build:demo",
+    "build:package": "cd packages/react-indexeddb-toolkit && npm run build",
+    "build:demo": "cd packages/demo-webapp && npm run build",
+    "dev": "concurrently \"npm run dev:package\" \"npm run dev:demo\"",
+    "dev:package": "cd packages/react-indexeddb-toolkit && npm run dev",
+    "dev:demo": "cd packages/demo-webapp && npm start",
+    "test": "npm run test:package",
+    "test:package": "cd packages/react-indexeddb-toolkit && npm test"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "react-indexeddb-toolkit",
+  "version": "1.0.0",
+  "description": "A complete TypeScript toolkit for IndexedDB in React applications",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "del-cli dist",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "indexeddb",
+    "typescript",
+    "browser-storage",
+    "hooks"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "del-cli": "^6.0.0",
+    "react": "^18.3.1",
+    "typescript": "^5.7.2"
+  }
+}

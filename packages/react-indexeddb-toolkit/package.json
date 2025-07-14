@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build": "tsc",
@@ -18,10 +20,20 @@
     "indexeddb",
     "typescript",
     "browser-storage",
-    "hooks"
+    "hooks",
+    "database",
+    "client-side-storage"
   ],
-  "author": "Your Name",
+  "author": "Your Name <your.email@example.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "hhttps://github.com/shefihu/react-indexeddb-toolkit"
+  },
+  "homepage": "https://github.com/shefihu/react-indexeddb-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/shefihu/react-indexeddb-toolkit/issues"
+  },
   "peerDependencies": {
     "react": ">=16.8.0"
   },

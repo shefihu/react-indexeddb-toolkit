@@ -55,7 +55,7 @@ The demo app in `packages/demo-webapp/` showcases the toolkit's capabilities wit
 
 - [Package README](./packages/react-indexeddb-toolkit/README.md)
 - [API Documentation](./packages/react-indexeddb-toolkit/docs/API.md)
-- [Examples](./packages/demo-webapp/src/examples/)
+- [Examples](./packages/demo-webapp/src/)
 
 ## 🤝 Contributing
 

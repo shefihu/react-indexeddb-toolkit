@@ -1,9 +1,16 @@
+export interface StoreConfig {
+  name: string;
+  keyPath?: string;
+  indexes?: DBIndex[];
+}
 export interface DBConfig {
   dbName: string;
   version?: number;
-  storeName: string;
-  keyPath?: string;
-  indexes?: DBIndex[];
+  stores: StoreConfig[];
+  store?: string;
+  // storeName: string;
+  // keyPath?: string;
+  // indexes?: DBIndex[];
 }
 
 export interface DBIndex {

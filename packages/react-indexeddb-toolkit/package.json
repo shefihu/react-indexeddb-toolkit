@@ -1,6 +1,6 @@
 {
   "name": "react-indexeddb-toolkit",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "A complete TypeScript toolkit for IndexedDB in React applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -24,7 +24,7 @@
     "database",
     "client-side-storage"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Rotimi",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -10,6 +10,7 @@ A complete TypeScript toolkit for IndexedDB in React applications with custom ho
 - 📱 Browser storage with IndexedDB
 - 🎯 Simple CRUD operations
 - 🔍 Index support for complex queries
+- 🏪 Multiple stores support
 - ⚡ Optimized performance
 - 🛠️ Zero dependencies (except React)
 
@@ -33,8 +34,12 @@ interface User {
 function UserComponent() {
   const { data, save, remove, isLoading, error } = useIndexedDB<User>({
     dbName: "myapp",
-    storeName: "users",
-    keyPath: "id",
+    stores: [
+      {
+        name: "users",
+        keyPath: "id",
+      },
+    ],
   });
 
   const addUser = async () => {
@@ -102,9 +107,14 @@ const {
 interface DBConfig {
   dbName: string; // Database name
   version?: number; // Database version (default: 1)
-  storeName: string; // Object store name
+  stores: StoreConfig[]; // Array of store configurations
+  store?: string; // Specific store to use (required if multiple stores)
+}
+
+interface StoreConfig {
+  name: string; // Store name
   keyPath?: string; // Key path (default: 'id')
-  indexes?: DBIndex[]; // Array of indexes
+  indexes?: DBIndex[]; // Array of indexes for this store
 }
 
 interface DBIndex {
@@ -118,24 +128,80 @@ interface DBIndex {
 }
 ```
 
-## Advanced Usage
+## Usage Examples
+
+### Single Store Database
+
+```tsx
+const { data, save } = useIndexedDB<User>({
+  dbName: "myapp",
+  stores: [
+    {
+      name: "users",
+      keyPath: "id",
+    },
+  ],
+});
+```
+
+### Multiple Stores Database
+
+When using multiple stores, you must specify which store to use:
+
+```tsx
+// Users hook
+const { data: users, save: saveUser } = useIndexedDB<User>({
+  dbName: "myapp",
+  stores: [
+    {
+      name: "users",
+      keyPath: "id",
+    },
+    {
+      name: "products",
+      keyPath: "id",
+    },
+  ],
+  store: "users", // Specify which store to use
+});
+
+// Products hook (same database, different store)
+const { data: products, save: saveProduct } = useIndexedDB<Product>({
+  dbName: "myapp",
+  stores: [
+    {
+      name: "users",
+      keyPath: "id",
+    },
+    {
+      name: "products",
+      keyPath: "id",
+    },
+  ],
+  store: "products", // Specify which store to use
+});
+```
 
 ### With Indexes
 
 ```tsx
 const { data, save } = useIndexedDB<User>({
   dbName: "myapp",
-  storeName: "users",
-  keyPath: "id",
-  indexes: [
+  stores: [
     {
-      name: "email",
-      keyPath: "email",
-      options: { unique: true },
-    },
-    {
-      name: "name",
-      keyPath: "name",
+      name: "users",
+      keyPath: "id",
+      indexes: [
+        {
+          name: "email",
+          keyPath: "email",
+          options: { unique: true },
+        },
+        {
+          name: "name",
+          keyPath: "name",
+        },
+      ],
     },
   ],
 });
@@ -148,8 +214,12 @@ import { IndexedDBManager } from "react-indexeddb-toolkit";
 
 const dbManager = new IndexedDBManager<User>({
   dbName: "myapp",
-  storeName: "users",
-  keyPath: "id",
+  stores: [
+    {
+      name: "users",
+      keyPath: "id",
+    },
+  ],
 });
 
 // Initialize the database
@@ -169,6 +239,70 @@ await dbManager.delete("1");
 
 // Clear all
 await dbManager.clear();
+```
+
+### Complex Multi-Store Example
+
+```tsx
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  userId: string;
+}
+
+interface Order {
+  id: string;
+  userId: string;
+  productIds: string[];
+  total: number;
+  createdAt: string;
+}
+
+// Define the database structure once
+const dbConfig = {
+  dbName: "ecommerce",
+  version: 1,
+  stores: [
+    {
+      name: "users",
+      keyPath: "id",
+      indexes: [{ name: "email", keyPath: "email", options: { unique: true } }],
+    },
+    {
+      name: "products",
+      keyPath: "id",
+      indexes: [{ name: "userId", keyPath: "userId" }],
+    },
+    {
+      name: "orders",
+      keyPath: "id",
+      indexes: [
+        { name: "userId", keyPath: "userId" },
+        { name: "createdAt", keyPath: "createdAt" },
+      ],
+    },
+  ],
+};
+
+// Use different stores
+function useUsers() {
+  return useIndexedDB<User>({ ...dbConfig, store: "users" });
+}
+
+function useProducts() {
+  return useIndexedDB<Product>({ ...dbConfig, store: "products" });
+}
+
+function useOrders() {
+  return useIndexedDB<Order>({ ...dbConfig, store: "orders" });
+}
 ```
 
 ### Error Handling
@@ -206,8 +340,12 @@ interface Product {
 
 const { data, save } = useIndexedDB<Product>({
   dbName: "store",
-  storeName: "products",
-  keyPath: "id",
+  stores: [
+    {
+      name: "products",
+      keyPath: "id",
+    },
+  ],
 });
 
 // TypeScript will enforce the Product interface
@@ -222,11 +360,13 @@ await save({
 
 ## Best Practices
 
-1. **Use consistent key paths**: Stick to a consistent naming convention for your IDs
-2. **Handle errors gracefully**: Always check for errors and handle them appropriately
-3. **Use indexes wisely**: Create indexes for fields you frequently query
-4. **Keep data normalized**: Avoid deeply nested objects for better performance
-5. **Clean up resources**: The hook handles cleanup automatically, but be mindful when using the manager directly
+1. **Define database structure once**: Create a shared configuration object for multi-store databases
+2. **Use consistent key paths**: Stick to a consistent naming convention for your IDs
+3. **Handle errors gracefully**: Always check for errors and handle them appropriately
+4. **Use indexes wisely**: Create indexes for fields you frequently query
+5. **Keep data normalized**: Avoid deeply nested objects for better performance
+6. **Separate concerns**: Use different stores for different data types
+7. **Version your database**: Increment the version number when making schema changes
 
 ## Browser Support
 

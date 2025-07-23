@@ -21,8 +21,12 @@ const TodoDemo: React.FC = () => {
     update,
   } = useIndexedDB<Todo>({
     dbName: "TodoDemoDB",
-    storeName: "todos",
-    keyPath: "id",
+    stores: [
+      {
+        name: "todos",
+        keyPath: "id",
+      },
+    ],
   });
 
   const addTodo = async () => {

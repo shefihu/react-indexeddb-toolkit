@@ -6,7 +6,21 @@ export function useIndexedDB<T>(config: DBConfig): UseIndexedDBReturn<T> {
   const [data, setData] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [dbManager] = useState(() => new IndexedDBManager<T>(config));
+
+  const storeName =
+    config.store ??
+    (config.stores.length === 1
+      ? config.stores[0].name
+      : (() => {
+          throw new Error("Must specify a store when you have multiple");
+        })());
+
+  const [dbManager] = useState(
+    () => new IndexedDBManager<T>({ ...config, store: storeName })
+  );
+
+  const keyPath =
+    config.stores.find((s) => s.name === storeName)?.keyPath || "id";
 
   const loadData = useCallback(async () => {
     try {
@@ -41,14 +55,14 @@ export function useIndexedDB<T>(config: DBConfig): UseIndexedDBReturn<T> {
         setError(null);
         await dbManager.delete(id);
         setData((prev) =>
-          prev.filter((item) => (item as any)[config.keyPath || "id"] !== id)
+          prev.filter((item) => (item as any)[keyPath || "id"] !== id)
         );
       } catch (err: any) {
         setError(err.message || "Failed to delete item");
         throw err;
       }
     },
-    [dbManager, config.keyPath]
+    [dbManager, keyPath]
   );
 
   const update = useCallback(

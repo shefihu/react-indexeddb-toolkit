@@ -19,8 +19,12 @@ const UserPrefsDemo: React.FC = () => {
     error,
   } = useIndexedDB<UserPreference>({
     dbName: "UserPrefsDB",
-    storeName: "preferences",
-    keyPath: "id",
+    stores: [
+      {
+        name: "preferences",
+        keyPath: "id",
+      },
+    ],
   });
 
   const currentPrefs = prefs[0] || {

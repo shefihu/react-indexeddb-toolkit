@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { useIndexedDB } from "react-indexeddb-toolkit";
+
 import { Plus, Trash2, Check, RefreshCw } from "lucide-react";
+import { useIndexedDB } from "react-indexeddb-toolkit";
 
 interface Todo {
   id: string;
@@ -65,7 +66,7 @@ const TodoDemo: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="card p-6">
+      <div className="p-6 card">
         <div className="flex items-center justify-center py-12">
           <RefreshCw className="w-8 h-8 animate-spin text-primary-600" />
           <span className="ml-3 text-gray-600">Loading todos...</span>
@@ -76,14 +77,14 @@ const TodoDemo: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="card p-6">
-        <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
+      <div className="p-6 card">
+        <h2 className="flex items-center gap-3 mb-6 text-2xl font-bold">
           <Check className="w-8 h-8 text-primary-600" />
           Todo Demo
         </h2>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="px-4 py-3 mb-4 text-red-700 border border-red-200 rounded bg-red-50">
             {error}
           </div>
         )}
@@ -96,12 +97,12 @@ const TodoDemo: React.FC = () => {
             onChange={(e) => setNewTodo(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && addTodo()}
             placeholder="What needs to be done?"
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           />
           <button
             onClick={addTodo}
             disabled={!newTodo.trim()}
-            className="btn-primary flex items-center gap-2"
+            className="flex items-center gap-2 btn-primary"
           >
             <Plus className="w-4 h-4" />
             Add
@@ -110,19 +111,19 @@ const TodoDemo: React.FC = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-4 mb-6">
-          <div className="text-center p-3 bg-gray-50 rounded">
+          <div className="p-3 text-center rounded bg-gray-50">
             <div className="text-2xl font-bold text-primary-600">
               {todos.length}
             </div>
             <div className="text-sm text-gray-600">Total</div>
           </div>
-          <div className="text-center p-3 bg-gray-50 rounded">
+          <div className="p-3 text-center rounded bg-gray-50">
             <div className="text-2xl font-bold text-green-600">
               {todos.filter((t) => t.completed).length}
             </div>
             <div className="text-sm text-gray-600">Completed</div>
           </div>
-          <div className="text-center p-3 bg-gray-50 rounded">
+          <div className="p-3 text-center rounded bg-gray-50">
             <div className="text-2xl font-bold text-orange-600">
               {todos.filter((t) => !t.completed).length}
             </div>
@@ -132,7 +133,7 @@ const TodoDemo: React.FC = () => {
 
         {/* Todo List */}
         {todos.length === 0 ? (
-          <div className="text-center py-12 text-gray-500">
+          <div className="py-12 text-center text-gray-500">
             <Check className="w-16 h-16 mx-auto mb-4 text-gray-300" />
             <p>No todos yet. Add your first todo above!</p>
           </div>
@@ -141,13 +142,13 @@ const TodoDemo: React.FC = () => {
             {todos.map((todo) => (
               <div
                 key={todo.id}
-                className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-3 p-3 transition-colors border border-gray-200 rounded-lg hover:bg-gray-50"
               >
                 <input
                   type="checkbox"
                   checked={todo.completed}
                   onChange={() => toggleTodo(todo)}
-                  className="w-5 h-5 text-primary-600 rounded border-gray-300"
+                  className="w-5 h-5 border-gray-300 rounded text-primary-600"
                 />
                 <div className="flex-1">
                   <div
@@ -165,7 +166,7 @@ const TodoDemo: React.FC = () => {
                 </div>
                 <button
                   onClick={() => deleteTodo(todo.id)}
-                  className="p-2 text-gray-400 hover:text-red-600 transition-colors"
+                  className="p-2 text-gray-400 transition-colors hover:text-red-600"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>

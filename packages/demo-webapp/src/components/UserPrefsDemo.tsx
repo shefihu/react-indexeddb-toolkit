@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useIndexedDB } from "react-indexeddb-toolkit";
+
 import { Settings, Save, RefreshCw } from "lucide-react";
+import { useIndexedDB } from "react-indexeddb-toolkit";
 
 interface UserPreference {
   id: string;
@@ -63,7 +64,7 @@ const UserPrefsDemo: React.FC = () => {
   if (isLoading) {
     return (
       <div className="max-w-2xl mx-auto">
-        <div className="card p-6">
+        <div className="p-6 card">
           <div className="flex items-center justify-center py-12">
             <RefreshCw className="w-8 h-8 animate-spin text-primary-600" />
             <span className="ml-3 text-gray-600">Loading preferences...</span>
@@ -75,14 +76,14 @@ const UserPrefsDemo: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="card p-6">
+      <div className="p-6 card">
         <div className="flex items-center gap-3 mb-6">
           <Settings className="w-8 h-8 text-primary-600" />
           <h2 className="text-2xl font-bold">User Preferences Demo</h2>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="px-4 py-3 mb-4 text-red-700 border border-red-200 rounded bg-red-50">
             {error}
           </div>
         )}
@@ -90,7 +91,7 @@ const UserPrefsDemo: React.FC = () => {
         <div className="space-y-6">
           {/* Theme Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block mb-3 text-sm font-medium text-gray-700">
               Theme Preference
             </label>
             <div className="flex gap-4">
@@ -117,7 +118,7 @@ const UserPrefsDemo: React.FC = () => {
 
           {/* Language Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block mb-3 text-sm font-medium text-gray-700">
               Language
             </label>
             <select
@@ -125,7 +126,7 @@ const UserPrefsDemo: React.FC = () => {
               onChange={(e) =>
                 setLocalPrefs((prev) => ({ ...prev, language: e.target.value }))
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               <option value="en">English</option>
               <option value="es">Spanish</option>
@@ -152,7 +153,7 @@ const UserPrefsDemo: React.FC = () => {
                     notifications: e.target.checked,
                   }))
                 }
-                className="mr-3 text-primary-600 rounded"
+                className="mr-3 rounded text-primary-600"
               />
               <span>Enable push notifications</span>
             </label>
@@ -167,7 +168,7 @@ const UserPrefsDemo: React.FC = () => {
                     autoSave: e.target.checked,
                   }))
                 }
-                className="mr-3 text-primary-600 rounded"
+                className="mr-3 rounded text-primary-600"
               />
               <span>Auto-save changes</span>
             </label>
@@ -178,7 +179,7 @@ const UserPrefsDemo: React.FC = () => {
             <button
               onClick={savePreferences}
               disabled={isSaving}
-              className="btn-primary flex items-center gap-2"
+              className="flex items-center gap-2 btn-primary"
             >
               {isSaving ? (
                 <RefreshCw className="w-4 h-4 animate-spin" />
@@ -191,7 +192,7 @@ const UserPrefsDemo: React.FC = () => {
 
           {/* Last Updated */}
           {currentPrefs.updatedAt && (
-            <div className="text-sm text-gray-500 pt-2">
+            <div className="pt-2 text-sm text-gray-500">
               Last updated: {new Date(currentPrefs.updatedAt).toLocaleString()}
             </div>
           )}
